@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="left" id="workspaces"></div>
+      <div class="media-container" >
+        <span class="artist" id="artist"></span>
+        <span class="title" id="title"></span>
+      </div>
+      <div class="right" id="clock">></div>
+    </div>
+
+    <script type="module">
+      import * as zebar from 'https://cdn.jsdelivr.net/npm/zebar@3.0.0/+esm';
+
+      const providers = zebar.createProviderGroup({
+        glazewm: { type: 'glazewm' },
+        date: { type: 'date', formatting: 'EEE d MMM HH:mm' },
+        media: { type: 'media' },
+      });
+
+      providers.onOutput(output => {
+        const wsContainer = document.getElementById('workspaces');
+        wsContainer.innerHTML = '';
+
+        if (output.glazewm) {
+          output.glazewm.currentWorkspaces.forEach(ws => {
+            const btn = document.createElement('button');
+            btn.className = 'workspace';
+            if (ws.hasFocus) btn.classList.add('focused');
+            if (ws.isDisplayed) btn.classList.add('displayed');
+            btn.textContent = ws.displayName ?? ws.name;
+            btn.onclick = () =>
+              output.glazewm.runCommand(`focus --workspace ${ws.name}`);
+            wsContainer.appendChild(btn);
+          });
+        }
+
+        const clock = document.getElementById('clock');
+        clock.textContent = output.date?.formatted ?? '';
+
+        const artist = document.getElementById('artist');
+        const title = document.getElementById('title');
+
+        artist.textContent = output.media?.currentSession?.artist ?? '';
+        title.textContent = output.media?.currentSession?.title ?? '';
+      });
+    </script>
+  </body>
+</html>

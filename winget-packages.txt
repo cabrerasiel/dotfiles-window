@@ -1,0 +1,38 @@
+# Paquetes instalados via winget (solo fuente "winget")
+# Generado: 2026-07-02
+# Para instalar: winget import winget-packages.txt
+#
+# NOTA: Muchos paquetes del sistema (VCLibs, AppRuntime, ODBC, etc.)
+# se instalan como dependencias y no es necesario reinstalarlos manualmente.
+# Esta lista incluye solo los paquetes notables instalados explícitamente.
+
+# Shell / Terminal
+Microsoft.PowerShell
+Microsoft.WindowsTerminal
+Microsoft.WSL
+Alacritty.Alacritty
+
+# Tools
+Git.Git
+GitHub.cli
+CoreyButler.NVMforWindows
+Google.Chrome
+Microsoft.Edge
+Swift.Toolchain
+
+# Development
+Microsoft.VisualStudioCode
+Microsoft.VisualStudio.Enterprise
+Microsoft.DotNet.SDK.6
+Microsoft.DotNet.SDK.8
+Microsoft.DotNet.DesktopRuntime.8
+Microsoft.DotNet.DesktopRuntime.10
+
+# Office
+Microsoft.Office
+Microsoft.Teams
+Microsoft.OneDrive
+
+# System
+Microsoft.PowerToys
+Dell.CommandUpdate

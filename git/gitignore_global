@@ -1,0 +1,38 @@
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# VS
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET
+bin/
+obj/
+*.userprefs
+packages/
+*.nupkg
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
+
+# Angular
+dist/
+tmp/
+*.ngsummary.json
+*.ngfactory.ts
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store

@@ -1,0 +1,56 @@
+{
+  "editor.fontFamily": "'Dank Mono','Fira Code'",
+  //"editor.fontFamily": "DankMono-Regular",
+  "editor.fontLigatures": true,
+  "editor.trimAutoWhitespace": true,
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "explorer.openEditors.visible": 0,
+  "git.ignoreMissingGitWarning": true,
+  "team.showWelcomeMessage": false,
+  // "telemetry.enableTelemetry": false,
+  // "telemetry.enableCrashReporter": false,
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "editor.tabSize": 2,
+  "editor.formatOnType": true,
+  "workbench.iconTheme": "vscode-icons",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "angular.experimental-ivy": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.fontFamily": "FiraCode NF",
+  "editor.inlineSuggest.enabled": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "vscode-edge-devtools.webhint": false,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "sonarlint.rules": {
+    "typescript:S6590": {
+      "level": "off"
+    }
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+  },
+  "sonarlint.pathToNodeExecutable": "C:\\\\nvm4w\\\\nodejs\\\\node.exe",
+  "sonarlint.automaticAnalysis": false,
+}

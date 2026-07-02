@@ -1,0 +1,26 @@
+format = "$directory$git_branch$git_status$character"
+command_timeout = 5000
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+style = "bold purple"
+
+[git_status]
+untracked = "?"
+modified = "!"
+staged = "+"
+ahead = "↑"
+behind = "↓"
+diverged = "↕"
+
+[fill]
+symbol = " "

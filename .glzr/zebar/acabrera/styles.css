@@ -10,14 +10,16 @@
   --r82-text: #f6dcac;
   --r82-subtext0: #a7c9c6;
   --r82-accent: #faa968;
+  --r82-red: #f85525;
+  --r82-panel-teal: #3f8f8a;
   --r82-green: #028391;
 
   --text-color: var(--r82-text);
   --text-color-muted: var(--r82-subtext0);
   --bg: rgba(5 24 46 / 85%);
-  --workspace-bg: rgba(19 78 90 / 30%);
-  --workspace-focused: rgba(2 131 145 / 80%);
-  --workspace-displayed: rgba(19 78 90 / 80%);
+  --workspace-bg: var(--r82-panel-teal);
+  --workspace-focused: var(--r82-red);
+  --workspace-displayed: var(--r82-panel-teal);
 }
 
 * {

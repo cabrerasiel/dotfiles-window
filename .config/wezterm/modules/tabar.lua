@@ -19,6 +19,66 @@ function M.apply(config)
 		return string.gsub(s, "(.*[/\\])(.*)", "%2")
 	end
 
+	local process_label = function(s)
+		s = basename(s or ""):gsub("%.exe$", "")
+
+		local labels = {
+			nvim = "nvim",
+			wezterm = "wezterm",
+			["wezterm-gui"] = "wezterm",
+			copilot = "copilot",
+			pwsh = "pwsh",
+			powershell = "powershell",
+			cmd = "cmd",
+			node = "node",
+			git = "git",
+		}
+
+		return labels[s] or s
+	end
+
+	local normalize_path = function(path)
+		if not path or path == "" then
+			return ""
+		end
+
+		-- WezTerm returns Windows paths as /C:/Users/...; git -C expects C:/Users/...
+		return path:gsub("^/([A-Za-z]:/)", "%1")
+	end
+
+	local git_cache = { cwd = nil, at = 0, info = nil }
+	local git_info = function(cwd)
+		if not cwd or cwd == "" then
+			return nil
+		end
+
+		local now = os.time()
+		if git_cache.cwd == cwd and now - git_cache.at < 5 then
+			return git_cache.info
+		end
+
+		local ok, stdout = wezterm.run_child_process({ "git", "-C", cwd, "status", "--short", "--branch" })
+		if not ok then
+			git_cache = { cwd = cwd, at = now, info = nil }
+			return nil
+		end
+
+		local lines = {}
+		for line in stdout:gmatch("[^\r\n]+") do
+			table.insert(lines, line)
+		end
+
+		local branch = (lines[1] or ""):gsub("^## ", ""):gsub("%.%.%..*", ""):gsub("%s%[.*%]", "")
+		if branch == "" then
+			git_cache = { cwd = cwd, at = now, info = nil }
+			return nil
+		end
+
+		local info = { branch = branch, changes = math.max(#lines - 1, 0) }
+		git_cache = { cwd = cwd, at = now, info = info }
+		return info
+	end
+
 	wezterm.on("update-status", function(window, pane)
 		local palette = theme.get_palette(config)
 		local stat = window:active_workspace()
@@ -36,15 +96,19 @@ function M.apply(config)
 		end
 
 		local cwd = pane:get_current_working_dir()
+		local cwd_path = ""
+		local cwd_label = ""
 		if cwd then
-			cwd = basename(cwd.file_path) --> URL object introduced in 20240127-113634-bbcac864 (type(cwd) == "userdata")
+			cwd_path = normalize_path(cwd.file_path)
+			cwd_label = basename(cwd_path) --> URL object introduced in 20240127-113634-bbcac864 (type(cwd) == "userdata")
 		else
-			cwd = ""
+			cwd_label = ""
 		end
+		local git = git_info(cwd_path)
 
 		local cmd = pane:get_foreground_process_name()
 		--> CWD and CMD could be nil (e.g. viewing log using Ctrl-Alt-l)
-		cmd = cmd and basename(cmd) or ""
+		cmd = process_label(cmd)
 
 		window:set_left_status(wezterm.format({
 			{ Background = { Color = stat_fg } },
@@ -59,10 +123,22 @@ function M.apply(config)
 		}))
 
 		window:set_right_status(wezterm.format({
-			{ Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
-			{ Text = " | " },
-			{ Foreground = { Color = palette.ansi[1] } },
-			{ Text = wezterm.nerdfonts.fa_code .. "  " .. cmd },
+			{ Foreground = { Color = palette.brights[5] } },
+			{ Text = wezterm.nerdfonts.fa_code .. "  " },
+			{ Foreground = { Color = palette.foreground } },
+			{ Attribute = { Intensity = "Bold" } },
+			{ Text = cmd },
+			{ Attribute = { Intensity = "Normal" } },
+			{ Foreground = { Color = palette.ansi[5] } },
+			{ Text = "  /  " },
+			{ Foreground = { Color = palette.foreground } },
+			{ Text = wezterm.nerdfonts.md_folder .. "  " .. cwd_label },
+			{ Foreground = { Color = palette.ansi[5] } },
+			{ Text = git and "  /  " or "" },
+			{ Foreground = { Color = palette.ansi[5] } },
+			{ Text = git and (wezterm.nerdfonts.dev_git_branch .. "  " .. git.branch) or "" },
+			{ Foreground = { Color = palette.ansi[2] } },
+			{ Text = git and git.changes > 0 and ("  " .. wezterm.nerdfonts.cod_circle_filled .. " " .. git.changes) or "" },
 			{ Text = "  " },
 		}))
 	end)

@@ -12,6 +12,7 @@ return {
 				css = { "prettier" },
 				scss = { "prettier" },
 				cs = { "csharpier" },
+				rust = { "rustfmt" },
 			},
 		},
 	},

@@ -30,7 +30,12 @@
         ]
       },
       "privileges": {
-        "shellCommands": []
+        "shellCommands": [
+          {
+            "program": "node",
+            "argsRegex": "^--experimental-sqlite .*copilot-status\\.js$"
+          }
+        ]
       },
       "presets": [
         {

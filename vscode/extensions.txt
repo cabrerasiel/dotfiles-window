@@ -1,5 +1,4 @@
 angular.ng-template
-catppuccin.catppuccin-vsc
 csharpier.csharpier-vscode
 dbaeumer.vscode-eslint
 esbenp.prettier-vscode
@@ -22,6 +21,7 @@ ms-toolsai.vscode-jupyter-slideshow
 ms-vscode.azure-account
 ms-vscode.powershell
 nucllear.vscode-extension-auto-import
+oldjobobo.retro-82-theme
 sdras.night-owl
 sonarsource.sonarlint-vscode
 steoates.autoimport

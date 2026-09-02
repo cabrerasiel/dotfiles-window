@@ -1,10 +1,27 @@
 return {
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        cs = { "csharpier" },
-      },
-    },
-  },
+	{
+		"stevearc/conform.nvim",
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
+		opts = {
+			formatters_by_ft = {
+				typescript = { "prettier" },
+				javascript = { "prettier" },
+				html = { "prettier" },
+				htmlangular = { "prettier" },
+				css = { "prettier" },
+				scss = { "prettier" },
+				cs = { "csharpier" },
+			},
+		},
+	},
+	{
+		"zapling/mason-conform.nvim",
+		dependencies = { "mason-org/mason.nvim", "stevearc/conform.nvim" },
+		config = function()
+			require("mason-conform").setup({
+				ensure_installed = { "prettier" },
+			})
+		end,
+	},
 }

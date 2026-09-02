@@ -14,7 +14,7 @@
   // "telemetry.enableTelemetry": false,
   // "telemetry.enableCrashReporter": false,
   "window.zoomLevel": 1,
-  "workbench.colorTheme": "Catppuccin Mocha",
+  "workbench.colorTheme": "Retro '82",
   "editor.tabSize": 2,
   "editor.formatOnType": true,
   "workbench.iconTheme": "vscode-icons",

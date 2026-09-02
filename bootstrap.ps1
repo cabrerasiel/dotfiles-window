@@ -63,6 +63,9 @@ Install-File -Source '.glzr\glazewm' -Dest "$HomeDir\.glzr\glazewm"
 # ── Zebar ─────────────────────────────────────────────────────
 Install-File -Source '.glzr\zebar' -Dest "$HomeDir\.glzr\zebar"
 
+# ── WezTerm ───────────────────────────────────────────────────
+Install-File -Source '.config\wezterm' -Dest "$HomeDir\.config\wezterm"
+
 # ── VS Code settings ──────────────────────────────────────────
 Install-File -Source 'vscode\settings.json' -Dest "$env:APPDATA\Code\User\settings.json"
 

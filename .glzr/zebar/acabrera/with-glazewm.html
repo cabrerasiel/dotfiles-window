@@ -8,11 +8,35 @@
   <body>
     <div class="app">
       <div class="left" id="workspaces"></div>
-      <div class="media-container" >
-        <span class="artist" id="artist"></span>
-        <span class="title" id="title"></span>
+      <div class="center media-container" id="media-container">
+        <button class="media-btn" id="media-prev" title="Previous">󰒮</button>
+        <button class="media-btn media-btn--play" id="media-toggle" title="Play/Pause">󰐊</button>
+        <button class="media-btn" id="media-next" title="Next">󰒭</button>
+        <div class="media-info">
+          <div class="media-text">
+            <span class="artist" id="artist"></span>
+            <span class="separator" id="media-sep"> — </span>
+            <span class="title" id="title"></span>
+          </div>
+          <div class="media-progress">
+            <div class="media-progress-fill" id="media-progress-fill"></div>
+          </div>
+        </div>
       </div>
-      <div class="right" id="clock">></div>
+      <div class="right">
+        <div class="pill copilot-widget" id="copilot-widget" title="GitHub Copilot usage">
+          <span class="copilot-icon">&#xec19;</span>
+          <span id="copilot-model" class="copilot-model"></span>
+          <span id="copilot-total">–</span>
+          <div class="copilot-panel" id="copilot-panel">
+            <div class="copilot-panel-title">Copilot — sesiones activas</div>
+            <div class="copilot-sessions" id="copilot-sessions"></div>
+          </div>
+        </div>
+        <div class="pill clock-widget">
+          <span id="clock"></span>
+        </div>
+      </div>
     </div>
 
     <script type="module">
@@ -34,7 +58,7 @@
             btn.className = 'workspace';
             if (ws.hasFocus) btn.classList.add('focused');
             if (ws.isDisplayed) btn.classList.add('displayed');
-            btn.textContent = ws.displayName ?? ws.name;
+            btn.title = ws.displayName ?? ws.name;
             btn.onclick = () =>
               output.glazewm.runCommand(`focus --workspace ${ws.name}`);
             wsContainer.appendChild(btn);
@@ -44,12 +68,107 @@
         const clock = document.getElementById('clock');
         clock.textContent = output.date?.formatted ?? '';
 
+        const mediaContainer = document.getElementById('media-container');
         const artist = document.getElementById('artist');
         const title = document.getElementById('title');
+        const sep = document.getElementById('media-sep');
+        const toggleBtn = document.getElementById('media-toggle');
+        const prevBtn = document.getElementById('media-prev');
+        const nextBtn = document.getElementById('media-next');
+        const progressFill = document.getElementById('media-progress-fill');
 
-        artist.textContent = output.media?.currentSession?.artist ?? '';
-        title.textContent = output.media?.currentSession?.title ?? '';
+        const session = output.media?.currentSession;
+
+        mediaContainer?.classList.toggle('media-container--empty', !session);
+
+        artist.textContent = session?.artist ?? '';
+        title.textContent = session?.title ?? (session ? '' : 'No media playing');
+        sep.style.display = session?.artist && session?.title ? 'inline' : 'none';
+
+        if (session) {
+          toggleBtn.textContent = session.isPlaying ? '󰏤' : '󰐊';
+          toggleBtn.onclick = () => output.media.togglePlayPause({ sessionId: session.sessionId });
+          prevBtn.onclick = () => output.media.previous({ sessionId: session.sessionId });
+          nextBtn.onclick = () => output.media.next({ sessionId: session.sessionId });
+
+          const duration = session.endTime - session.startTime;
+          const progress = duration > 0 ? (session.position - session.startTime) / duration : 0;
+          progressFill.style.width = `${Math.max(0, Math.min(1, progress)) * 100}%`;
+        } else {
+          toggleBtn.textContent = '󰐊';
+          toggleBtn.onclick = null;
+          prevBtn.onclick = null;
+          nextBtn.onclick = null;
+          progressFill.style.width = '0%';
+        }
       });
+
+      // ── GitHub Copilot usage widget ──────────────────────────────
+      const COPILOT_SCRIPT = 'C:\\Users\\acabrera\\.glzr\\zebar\\acabrera\\scripts\\copilot-status.js';
+
+      const copilotWidget = document.getElementById('copilot-widget');
+      const copilotPanel = document.getElementById('copilot-panel');
+      const copilotModel = document.getElementById('copilot-model');
+      const copilotTotal = document.getElementById('copilot-total');
+      const copilotSessions = document.getElementById('copilot-sessions');
+
+      copilotWidget.addEventListener('click', () => {
+        copilotPanel.classList.toggle('copilot-panel--open');
+      });
+
+      function timeAgo(isoString) {
+        if (!isoString) return '';
+        const diffMs = Date.now() - new Date(isoString).getTime();
+        const mins = Math.round(diffMs / 60000);
+        if (mins < 1) return 'ahora';
+        if (mins < 60) return `hace ${mins}m`;
+        return `hace ${Math.round(mins / 60)}h`;
+      }
+
+      async function refreshCopilotUsage() {
+        try {
+          const result = await zebar.shellExec('node', [
+            '--experimental-sqlite',
+            COPILOT_SCRIPT,
+          ]);
+          const data = JSON.parse(result.stdout);
+
+          copilotTotal.textContent = data.totalAiu.toFixed(2);
+          copilotWidget.classList.toggle('copilot-widget--empty', data.sessions.length === 0);
+
+          const activeModel =
+            data.sessions.find(s => s.working)?.model ?? data.sessions[0]?.model ?? null;
+          copilotModel.textContent = activeModel ?? '';
+
+          copilotSessions.innerHTML = '';
+          data.sessions.forEach(s => {
+            const item = document.createElement('div');
+            item.className = 'copilot-session';
+            if (s.working) item.classList.add('copilot-session--working');
+            item.innerHTML = `
+              <div class="copilot-session-row">
+                <span class="copilot-session-repo">${s.repo}</span>
+                <span class="copilot-session-aiu">${s.aiu.toFixed(2)} AIU</span>
+              </div>
+              <div class="copilot-session-row copilot-session-meta">
+                <span>${s.model ?? '–'}${s.reasoningEffort ? ` (${s.reasoningEffort})` : ''} · ${s.turnCount} turns</span>
+                <span>${timeAgo(s.refreshedAt)}</span>
+              </div>
+            `;
+            copilotSessions.appendChild(item);
+          });
+
+          if (data.sessions.length === 0) {
+            copilotSessions.innerHTML = '<div class="copilot-session-empty">Sin sesiones activas</div>';
+          }
+        } catch (err) {
+          copilotTotal.textContent = 'err';
+          copilotSessions.innerHTML = `<div class="copilot-session-empty">${err.message ?? err}</div>`;
+        }
+      }
+
+      refreshCopilotUsage();
+      setInterval(refreshCopilotUsage, 15000);
     </script>
   </body>
 </html>

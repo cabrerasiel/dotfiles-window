@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Retro 82",
+  "version": "1.0.0",
+  "theme": {
+    "colors": {
+      "frame": [5, 24, 46],
+      "frame_inactive": [3, 18, 34],
+      "toolbar": [5, 24, 46],
+      "tab_text": [246, 220, 172],
+      "tab_background_text": [167, 201, 198],
+      "bookmark_text": [246, 220, 172],
+      "ntp_background": [5, 24, 46],
+      "ntp_text": [246, 220, 172],
+      "button_background": [19, 78, 90]
+    },
+    "tints": {
+      "buttons": [0.47, 0.23, 0.52]
+    },
+    "properties": {
+      "ntp_background_alignment": "bottom"
+    }
+  }
+}

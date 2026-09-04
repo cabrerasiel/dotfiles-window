@@ -14,6 +14,9 @@ function M.apply(config)
 	}
 
 	config.window_close_confirmation = "NeverPrompt"
+
+	-- Enable Kitty graphics protocol so image previews (e.g. from Copilot CLI) render inline
+	config.enable_kitty_graphics = true
 end
 
 return M

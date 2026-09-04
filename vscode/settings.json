@@ -14,10 +14,10 @@
   // "telemetry.enableTelemetry": false,
   // "telemetry.enableCrashReporter": false,
   "window.zoomLevel": 1,
-  "workbench.colorTheme": "Retro '82",
+  "workbench.colorTheme": "Abyss",
   "editor.tabSize": 2,
   "editor.formatOnType": true,
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "vs-minimal",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "angular.experimental-ivy": true,
   "[html]": {
@@ -53,4 +53,5 @@
   },
   "sonarlint.pathToNodeExecutable": "C:\\\\nvm4w\\\\nodejs\\\\node.exe",
   "sonarlint.automaticAnalysis": false,
+  "chat.viewSessions.orientation": "stacked",
 }

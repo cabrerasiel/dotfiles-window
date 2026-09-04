@@ -128,8 +128,10 @@ workspaces:
     device_name: "DISPLAY2"
     bind_to_monitor: 2
   - name: '3'
+    device_name: "DISPLAY2"
     bind_to_monitor: 2
   - name: '5'
+    device_name: "DISPLAY2"
     bind_to_monitor: 2
 
   # Monitor 2 (DISPLAY1 - derecha): 2,4,6,7,8,9
@@ -189,6 +191,10 @@ window_rules:
   - commands: ["move --workspace 3"]
     match:
       - window_process: { equals: "devenv" }
+
+  - commands: ["move --workspace 3"]
+    match:
+      - window_process: { equals: "Code" }
 
   - commands: ["move --workspace 4"]
     match:

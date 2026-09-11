@@ -40,6 +40,27 @@ function Install-File {
   Write-Host "Installed $Source -> $Dest" -ForegroundColor Green
 }
 
+function Install-Symlink {
+  param([string]$Source, [string]$Dest)
+  $src = Join-Path $Dotfiles $Source
+  if (Test-Path $Dest) {
+    $existing = Get-Item -LiteralPath $Dest -Force
+    if ($existing.LinkType -eq 'SymbolicLink' -and $existing.Target -eq $src) {
+      Write-Host "OK $Dest (already linked)" -ForegroundColor Green
+      return
+    }
+    if (-not $Force) {
+      Write-Host "SKIP $Dest (exists, use -Force to overwrite)" -ForegroundColor Yellow
+      return
+    }
+    Remove-Item -LiteralPath $Dest -Recurse -Force
+  }
+  $parent = Split-Path $Dest -Parent
+  if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
+  New-Item -ItemType SymbolicLink -Path $Dest -Target $src -Force | Out-Null
+  Write-Host "Linked $Source -> $Dest" -ForegroundColor Green
+}
+
 # ── Chocolatey packages ──────────────────────────────────────
 $packagesPath = Join-Path $Dotfiles 'choco-packages.txt'
 if (Test-Path $packagesPath) {
@@ -51,11 +72,10 @@ if (Test-Path $packagesPath) {
 Install-File -Source 'Microsoft.PowerShell_profile.ps1' -Dest $PROFILE
 
 # ── psmux ─────────────────────────────────────────────────────
-Install-File -Source '.psmux.conf' -Dest "$HomeDir\.psmux.conf"
-Install-File -Source '.psmux' -Dest "$HomeDir\.psmux"
+Install-Symlink -Source '.psmux.conf' -Dest "$HomeDir\.psmux.conf"
 
 # ── opencode ──────────────────────────────────────────────────
-Install-File -Source '.opencode' -Dest "$HomeDir\.opencode"
+#Install-File -Source '.opencode' -Dest "$HomeDir\.opencode"
 
 # ── GlazeWM ───────────────────────────────────────────────────
 Install-File -Source '.glzr\glazewm' -Dest "$HomeDir\.glzr\glazewm"
@@ -65,6 +85,10 @@ Install-File -Source '.glzr\zebar' -Dest "$HomeDir\.glzr\zebar"
 
 # ── WezTerm ───────────────────────────────────────────────────
 Install-File -Source '.config\wezterm' -Dest "$HomeDir\.config\wezterm"
+
+# ── Alacritty ─────────────────────────────────────────────────
+Install-Symlink -Source '.config\alacritty\alacritty.toml' -Dest "$env:APPDATA\alacritty\alacritty.toml"
+Install-Symlink -Source '.config\alacritty\retro-82.toml' -Dest "$HomeDir\.config\alacritty\retro-82.toml"
 
 # ── VS Code settings ──────────────────────────────────────────
 Install-File -Source 'vscode\settings.json' -Dest "$env:APPDATA\Code\User\settings.json"

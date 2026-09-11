@@ -146,6 +146,13 @@ function M.apply(config)
 		-- We can make separate keybindings for resizing panes
 		-- But Wezterm offers custom "mode" in the name of "KeyTable"
 		{ key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
+
+		{ key = "c", mods = "ALT", action = act.SplitPane({ direction = "Down", size = { Percent = 30 } }) },
+		{
+			key = "Z",
+			mods = "CTRL|SHIFT",
+			action = act.TogglePaneZoomState,
+		},
 	}
 
 	for i = 1, 9 do

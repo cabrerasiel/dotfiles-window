@@ -21,7 +21,6 @@ mingw|16.1.0
 mkcert|1.4.4
 nvm|1.2.2.20251229
 nvm.install|1.2.2.20251229
-opencode|1.17.11
 powershell-core|7.6.3
 ripgrep|14.1.0
 snoop|6.1.1

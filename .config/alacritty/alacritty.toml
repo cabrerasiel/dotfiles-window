@@ -1,0 +1,53 @@
+[general]
+import = ["~/.config/alacritty/retro-82.toml"]
+live_config_reload = true
+
+[window]
+# Quita la barra de título y los botones de minimizar/maximizar/cerrar.
+decorations = "None"
+
+[font]
+size = 12.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font" # Reemplaza con el nombre exacto de tu fuente
+style = "Regular"
+
+
+[terminal.shell]
+program = "pwsh.exe"
+args = ["-NoExit", "-ExecutionPolicy", "Bypass", "-Command", "cd ~; . $PROFILE"]
+
+[keyboard]
+bindings = [
+  # Copy / Paste
+  { key = "V", mods = "Control", action = "Paste" },
+  { key = "C", mods = "Control", action = "Copy" },
+  { key = "Insert", mods = "Control", action = "Copy" },
+  { key = "Insert", mods = "Shift", action = "Paste" },
+  { key = "V", mods = "Control|Shift", action = "Paste" },
+  { key = "C", mods = "Control|Shift", action = "Copy" },
+
+  # Zoom de fuente
+  { key = "Equals", mods = "Control", action = "IncreaseFontSize" },
+  { key = "Equals", mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "Minus", mods = "Control", action = "DecreaseFontSize" },
+  { key = "Key0", mods = "Control", action = "ResetFontSize" },
+
+  # Ventana
+  { key = "N", mods = "Control|Shift", action = "SpawnNewInstance" },
+
+  # Scroll
+  { key = "PageUp", mods = "Shift", action = "ScrollPageUp" },
+  { key = "PageDown", mods = "Shift", action = "ScrollPageDown" },
+  { key = "Home", mods = "Shift", action = "ScrollToTop" },
+  { key = "End", mods = "Shift", action = "ScrollToBottom" },
+
+  # Vi mode (selección con teclado)
+  { key = "Space", mods = "Control|Shift", action = "ToggleViMode" },
+
+  # Deshabilitados: fullscreen y búsqueda
+  { key = "Return", mods = "Alt", action = "None" },
+  { key = "F", mods = "Control|Shift", action = "None" },
+  { key = "B", mods = "Control|Shift", action = "None" },
+]

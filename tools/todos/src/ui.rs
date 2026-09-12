@@ -12,7 +12,7 @@ use crate::app::App;
 pub fn render(app: &App, frame: &mut Frame) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
-        .constraints([Constraint::Min(3), Constraint::Length(3)])
+        .constraints([Constraint::Min(3), Constraint::Length(4)])
         .split(frame.area());
 
     let items: Vec<ListItem> = app
@@ -22,7 +22,9 @@ pub fn render(app: &App, frame: &mut Frame) {
         .map(|(i, todo)| {
             let status = if todo.is_done { "[✓] " } else { "[ ] " };
             let style = if i == app.selected_index {
-                Style::default().fg(Color::Yellow).add_modifier(Modifier::BOLD)
+                Style::default()
+                    .fg(Color::Yellow)
+                    .add_modifier(Modifier::BOLD)
             } else {
                 Style::default()
             };
@@ -30,12 +32,18 @@ pub fn render(app: &App, frame: &mut Frame) {
         })
         .collect();
 
-    let todo_list =
-        List::new(items).block(Block::default().borders(Borders::ALL).title("Todos"));
+    let todo_list = List::new(items).block(Block::default().borders(Borders::ALL).title("Todos"));
     frame.render_widget(todo_list, chunks[0]);
 
-    let help_text = " ↓/↑ o j/k: Navegar | Espacio: Completar/Desmarcar | q: Salir ";
-    let help_paragraph = Paragraph::new(help_text)
-        .block(Block::default().borders(Borders::ALL).title(" Atajos "));
+    let help_text = match &app.message {
+        Some(msg) => format!(
+            " ↓/↑ o j/k: Navegar | Espacio: Completar/Desmarcar | s: Guardar | q: Salir\n {msg}"
+        ),
+        None => {
+            " ↓/↑ o j/k: Navegar | Espacio: Completar/Desmarcar | s: Guardar | q: Salir".to_string()
+        }
+    };
+    let help_paragraph =
+        Paragraph::new(help_text).block(Block::default().borders(Borders::ALL).title(" Atajos "));
     frame.render_widget(help_paragraph, chunks[1]);
 }

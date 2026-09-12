@@ -24,6 +24,7 @@ pub fn on_key_event(app: &mut App, key: KeyEvent) {
         (_, KeyCode::Down | KeyCode::Char('j')) => app.next_todo(),
         (_, KeyCode::Up | KeyCode::Char('k')) => app.previous_todo(),
         (_, KeyCode::Char(' ')) => app.toggle_todo(),
+        (_, KeyCode::Char('s')) => app.save_todos(),
         _ => {}
     }
 }

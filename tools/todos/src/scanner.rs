@@ -1,6 +1,6 @@
+use crate::models::todos::Todo;
 use std::fs;
 use std::path::Path;
-use crate::models::todos::Todo;
 
 pub fn scan_directory(dir: &Path) -> Vec<Todo> {
     let mut todos = Vec::new();

@@ -69,50 +69,50 @@ if (Test-Path $packagesPath) {
 }
 
 # ── PowerShell profile ───────────────────────────────────────
-Install-File -Source 'Microsoft.PowerShell_profile.ps1' -Dest $PROFILE
+Install-Symlink -Source 'Microsoft.PowerShell_profile.ps1' -Dest $PROFILE
 
 # ── psmux ─────────────────────────────────────────────────────
 Install-Symlink -Source '.psmux.conf' -Dest "$HomeDir\.psmux.conf"
 
 # ── opencode ──────────────────────────────────────────────────
-#Install-File -Source '.opencode' -Dest "$HomeDir\.opencode"
+#Install-Symlink -Source '.opencode' -Dest "$HomeDir\.opencode"
 
 # ── GlazeWM ───────────────────────────────────────────────────
-Install-File -Source '.glzr\glazewm' -Dest "$HomeDir\.glzr\glazewm"
+Install-Symlink -Source '.glzr\glazewm' -Dest "$HomeDir\.glzr\glazewm"
 
 # ── Zebar ─────────────────────────────────────────────────────
-Install-File -Source '.glzr\zebar' -Dest "$HomeDir\.glzr\zebar"
+Install-Symlink -Source '.glzr\zebar' -Dest "$HomeDir\.glzr\zebar"
 
 # ── WezTerm ───────────────────────────────────────────────────
-Install-File -Source '.config\wezterm' -Dest "$HomeDir\.config\wezterm"
+Install-Symlink -Source '.config\wezterm' -Dest "$HomeDir\.config\wezterm"
 
 # ── Alacritty ─────────────────────────────────────────────────
 Install-Symlink -Source '.config\alacritty\alacritty.toml' -Dest "$env:APPDATA\alacritty\alacritty.toml"
 Install-Symlink -Source '.config\alacritty\retro-82.toml' -Dest "$HomeDir\.config\alacritty\retro-82.toml"
 
 # ── VS Code settings ──────────────────────────────────────────
-Install-File -Source 'vscode\settings.json' -Dest "$env:APPDATA\Code\User\settings.json"
+Install-Symlink -Source 'vscode\settings.json' -Dest "$env:APPDATA\Code\User\settings.json"
 
 # ── Neovim ────────────────────────────────────────────────────
-Install-File -Source 'nvim' -Dest "$env:LOCALAPPDATA\nvim"
+Install-Symlink -Source 'nvim' -Dest "$env:LOCALAPPDATA\nvim"
 
 # ── Starship prompt ───────────────────────────────────────────
-Install-File -Source '.config\starship.toml' -Dest "$HomeDir\.config\starship.toml"
+Install-Symlink -Source '.config\starship.toml' -Dest "$HomeDir\.config\starship.toml"
 
 # ── tmux ──────────────────────────────────────────────────────
-Install-File -Source '.config\tmux\tmux.conf' -Dest "$HomeDir\.config\tmux\tmux.conf"
-Install-File -Source '.config\tmux\gitmux.conf' -Dest "$HomeDir\.config\tmux\gitmux.conf"
+Install-Symlink -Source '.config\tmux\tmux.conf' -Dest "$HomeDir\.config\tmux\tmux.conf"
+Install-Symlink -Source '.config\tmux\gitmux.conf' -Dest "$HomeDir\.config\tmux\gitmux.conf"
 
 # ── Scoop config ──────────────────────────────────────────────
-Install-File -Source '.config\scoop\config.json' -Dest "$HomeDir\.config\scoop\config.json"
+Install-Symlink -Source '.config\scoop\config.json' -Dest "$HomeDir\.config\scoop\config.json"
 
 # ── NuGet config ─────────────────────────────────────────────
-Install-File -Source 'nuget\NuGet.config' -Dest "$env:APPDATA\NuGet\NuGet.config"
+Install-Symlink -Source 'nuget\NuGet.config' -Dest "$env:APPDATA\NuGet\NuGet.config"
 
 # ── Windows Terminal ─────────────────────────────────────────
 $wtPkg = Get-ChildItem "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState" -ErrorAction SilentlyContinue
 if ($wtPkg) {
-  Install-File -Source 'windows-terminal\settings.json' -Dest "$($wtPkg.FullName)\settings.json"
+  Install-Symlink -Source 'windows-terminal\settings.json' -Dest "$($wtPkg.FullName)\settings.json"
 } else {
   Write-Host "SKIP Windows Terminal — package path not found" -ForegroundColor Yellow
 }
@@ -156,6 +156,6 @@ if (Test-Path "$zebarMain\package.json") {
 }
 
 # ── Scripts (helpers for GlazeWM, etc.) ──────────────────────
-Install-File -Source 'scripts' -Dest "$HomeDir\.glzr\scripts"
+Install-Symlink -Source 'scripts' -Dest "$HomeDir\.glzr\scripts"
 
 Write-Host "`nDone. Reload your shell to pick up profile changes." -ForegroundColor Green

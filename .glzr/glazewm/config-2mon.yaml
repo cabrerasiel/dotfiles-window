@@ -249,8 +249,7 @@ keybindings:
     bindings: ['alt+p']
   - commands: ['resize --height +2%']
     bindings: ['alt+o']
-  - commands: ['resize --height -2%']
-    bindings: ['alt+i']
+  # alt+i liberado: ahora abre el popup de la sesión "copilot" en psmux
 
   # As an alternative to the resize keybindings above, resize mode enables
   # resizing via arrow keys or HJKL. The binding mode is defined above with

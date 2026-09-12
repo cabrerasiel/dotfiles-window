@@ -18,3 +18,20 @@ impl Todo {
         }
     }
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Section {
+    pub id: Uuid,
+    pub name: String,
+    pub todos: Vec<Todo>,
+}
+
+impl Section {
+    pub fn new(name: String) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            name,
+            todos: Vec::new(),
+        }
+    }
+}

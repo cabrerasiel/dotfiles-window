@@ -27,6 +27,11 @@ ehthumbs.db
 *.user
 *.suo
 
+# Secrets / credenciales locales
+.env
+.env.*
+!.env.example
+
 # Specific ignores
 chrome-theme/Cached Theme.pak
 

@@ -5,6 +5,9 @@ live_config_reload = true
 [window]
 # Quita la barra de título y los botones de minimizar/maximizar/cerrar.
 decorations = "None"
+# macOS: manda Option (izquierda y derecha) como Alt/Meta (M-) para que
+# funcionen binds como M-i en tmux/psmux. Sin efecto en Windows.
+option_as_alt = "Both"
 
 [font]
 size = 12.0

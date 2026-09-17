@@ -1,3 +1,5 @@
+//! Command-line argument definitions, parsed with `clap`.
+
 use clap::Parser;
 use std::path::PathBuf;
 
@@ -5,17 +7,38 @@ use std::path::PathBuf;
 #[command(
     author,
     version,
-    about = "Aplicación TUI para gestionar TODOs",
-    long_about = "Aplicación TUI para gestionar TODOs.\n\n\
-        Sin argumentos, las tareas se cargan y guardan (tecla `s`) en la base de datos \
-        local del usuario: $HOME/.todos.json."
+    about = "TUI application for managing TODOs",
+    long_about = "TUI application for managing TODOs.\n\n\
+        With no arguments, tasks are loaded from and saved to (press `s`) the \
+        user's local data file — see the README for its exact path on your OS."
 )]
 pub struct Cli {
-    /// Directorio a escanear en busca de comentarios TODO
+    /// Directory to scan for TODO comments
     #[arg(short, long, value_name = "DIR")]
     pub scan: Option<PathBuf>,
 
-    /// Archivo JSON de tareas a cargar o guardar (por defecto: $HOME/.todos.json)
+    /// JSON task file to load/save (defaults to the user's data file — see README)
     #[arg(value_name = "FILE")]
     pub file: Option<PathBuf>,
+
+    /// Reminders list to import as a linked section (repeatable)
+    #[arg(long = "reminders-list", value_name = "LIST")]
+    pub reminders_lists: Vec<String>,
+
+    /// Calendar to import as a linked section (repeatable)
+    #[arg(long = "calendar", value_name = "CALENDAR")]
+    pub calendars: Vec<String>,
+
+    /// Number of days ahead to import for each --calendar
+    #[arg(long = "calendar-days", value_name = "DAYS", default_value_t = 7)]
+    pub calendar_days: i64,
+
+    /// Import your assigned, unresolved Jira issues as a "Jira" section
+    /// (requires the JIRA_DOMAIN, JIRA_EMAIL and JIRA_API_TOKEN environment variables)
+    #[arg(long = "jira")]
+    pub jira: bool,
+
+    /// Additional Jira JQL query to import as its own section (repeatable)
+    #[arg(long = "jira-jql", value_name = "JQL")]
+    pub jira_jql: Vec<String>,
 }
